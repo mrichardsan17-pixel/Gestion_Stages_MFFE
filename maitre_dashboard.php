@@ -2,14 +2,12 @@
 session_start();
 require_once '../includes/config.php';
 
-// Déconnexion
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     session_destroy();
     header('Location: login.php');
     exit();
 }
 
-// Vérification session
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
@@ -19,7 +17,6 @@ $id_maitre = $_SESSION['user_id'];
 $success_msg = "";
 $error_msg = "";
 
-// Traitement de la validation du stage
 if (isset($_POST['valider_stage'])) {
     $id_s = $_POST['id_stage_valider'];
     $prog = $_POST['progression_actuelle'];
@@ -31,7 +28,6 @@ if (isset($_POST['valider_stage'])) {
     }
 }
 
-// Mise à jour du profil
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     $nom = htmlspecialchars($_POST['nom']);
     $prenom = htmlspecialchars($_POST['prenom']);
@@ -65,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     } catch (Exception $e) { $error_msg = "Erreur : " . $e->getMessage(); }
 }
 
-// Récupération infos encadreur
 $stmtM = $pdo->prepare("SELECT nom_user, prenom_user, email, photo_url FROM utilisateurs WHERE id_user = ?");
 $stmtM->execute([$id_maitre]);
 $maitre = $stmtM->fetch();
@@ -74,7 +69,6 @@ $nom_maitre = strtoupper($maitre['nom_user']);
 $photo_maitre = !empty($maitre['photo_url']) ? "../uploads/avatars/".$maitre['photo_url'] : ""; 
 $page = isset($_GET['page']) ? $_GET['page'] : 'mes_stagiaires';
 
-// Fonction de calcul de progression
 function obtenirEtSauvegarderInfos($id_stage, $date_debut, $type_stage_texte, $pdo) {
     $debut = new DateTime($date_debut);
     $aujourdhui = new DateTime(); 
