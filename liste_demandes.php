@@ -1,5 +1,4 @@
 <?php
-// On n'inclut pas config.php ici car il est déjà dans dashboard.php via l'include
 
 if (isset($_GET['id_action']) && isset($_GET['type'])) {
     $id = intval($_GET['id_action']);
@@ -33,7 +32,6 @@ if (isset($_GET['id_action']) && isset($_GET['type'])) {
     }
 }
 
-// Récupération des demandes
 $demandes = $pdo->query("SELECT d.*, e.nom_ecole 
                          FROM demandes d 
                          LEFT JOIN ecoles e ON d.id_ecole = e.id_ecole 
