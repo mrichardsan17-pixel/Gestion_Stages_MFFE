@@ -1,5 +1,5 @@
 <?php 
-// Correction du chemin : on remonte d'un cran pour atteindre 'includes' depuis le dossier 'pages'
+
 require_once '../includes/config.php'; 
 ?>
 <!DOCTYPE html>
