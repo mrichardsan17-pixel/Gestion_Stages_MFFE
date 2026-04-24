@@ -4,21 +4,21 @@ if (!isset($pdo)) {
 }
 
 try {
-    // 1. STATS PAR GENRE : Uniquement ceux qui ont effectué un stage (INNER JOIN)
+    
     $stmtGenre = $pdo->query("SELECT d.genre, COUNT(s.id_stage) as nb 
                               FROM demandes d 
                               INNER JOIN stages s ON d.id_demande = s.id_demande 
                               GROUP BY d.genre");
     $statsGenre = $stmtGenre->fetchAll(PDO::FETCH_ASSOC);
 
-    // 2. STATS PAR DIRECTION
+    
     $stmtDir = $pdo->query("SELECT dir.nom_direction, COUNT(s.id_stage) as nb 
                             FROM directions dir 
                             LEFT JOIN stages s ON dir.id_direction = s.id_direction 
                             GROUP BY dir.nom_direction");
     $statsDir = $stmtDir->fetchAll(PDO::FETCH_ASSOC);
 
-    // 3. STATS PAR ANNÉE
+    
     $stmtAnnee = $pdo->query("SELECT YEAR(date_debut) as annee, COUNT(*) as nb 
                               FROM stages 
                               GROUP BY annee 
@@ -29,7 +29,7 @@ try {
     die("Erreur stats : " . $e->getMessage());
 }
 
-// Préparation des données pour JavaScript
+
 $labelsGenre = []; $dataGenre = [];
 foreach($statsGenre as $g) {
     $labelsGenre[] = ($g['genre'] == 'M') ? 'Hommes' : 'Femmes';
@@ -82,12 +82,12 @@ foreach($statsDir as $d) {
 </div>
 
 <script>
-// Couleurs MFFE
+
 const mffeOrange = '#FF8200';
 const mffeBlue = '#003366';
 const mffeGreen = '#00663e';
 
-// Configuration Graphique Genre
+
 new Chart(document.getElementById('chartGenre'), {
     type: 'doughnut',
     data: {
@@ -101,7 +101,7 @@ new Chart(document.getElementById('chartGenre'), {
     options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
 });
 
-// Configuration Graphique Année
+
 new Chart(document.getElementById('chartAnnee'), {
     type: 'bar',
     data: {
@@ -115,7 +115,7 @@ new Chart(document.getElementById('chartAnnee'), {
     options: { maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
 });
 
-// Configuration Graphique Directions
+
 new Chart(document.getElementById('chartDir'), {
     type: 'bar',
     data: {
